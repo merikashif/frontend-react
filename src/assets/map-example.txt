@@ -1,0 +1,2 @@
+// Immagine di esempio di mappa (OpenStreetMap static)
+// https://static-maps.yandex.ru/1.x/?lang=it_IT&ll=10.2118,45.5416&z=14&l=map&size=600,300
