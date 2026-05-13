@@ -11,6 +11,7 @@ function Navbar({ user, onLogout, onShowAbout, onToggleBookings, onLogin }) {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
+  //ciao
   return (
     <nav className="navbar-main">
 
@@ -197,7 +198,7 @@ function App() {
       {user?.ruolo === "admin" && (
         <section id="dashboard" className="map-section">
 
-          <h2>📊 Dashboard Admin</h2>
+          <h2> Dashboard Admin</h2>
 
           <AdminDashboard
             parcheggi={parcheggi}
