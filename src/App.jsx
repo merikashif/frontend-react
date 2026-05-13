@@ -60,10 +60,33 @@ function App() {
   const [exitDate, setExitDate] = useState("");
   const [bookingPrice, setBookingPrice] = useState(0);
 
-  /* UTENTI FAKE */
+  const [showMap, setShowMap] = useState(false);
+
+  /* UTENTI */
   const fakeUsers = [
-    { id: 1, nome: "Admin", email: "admin", password: "1234", ruolo: "admin" },
-    { id: 2, nome: "Mario Rossi", email: "mario", password: "1234", ruolo: "utente" }
+    {
+      id: 1,
+      nome: "Amministratore",
+      email: "admin",
+      password: "admin123",
+      ruolo: "admin"
+    },
+
+    {
+      id: 2,
+      nome: "Mario Rossi",
+      email: "mario",
+      password: "user123",
+      ruolo: "utente"
+    },
+
+    {
+      id: 3,
+      nome: "Giulia Bianchi",
+      email: "giulia",
+      password: "user123",
+      ruolo: "utente"
+    }
   ];
 
   /* PARCHEGGI */
@@ -91,6 +114,7 @@ function App() {
 
   /* LOGIN */
   const handleLogin = (email, password) => {
+
     const found = fakeUsers.find(
       u => u.email === email && u.password === password
     );
@@ -111,20 +135,32 @@ function App() {
 
   /* PRENOTAZIONE */
   const prenotaPosto = (p) => {
-    if (!user) return setShowLogin(true);
+
+    if (!user) {
+      return setShowLogin(true);
+    }
+
+    if (user.ruolo === "admin") {
+      alert("Gli amministratori non possono prenotare");
+      return;
+    }
+
     setSelectedParking(p);
     setShowBookingDetails(true);
   };
 
   const calcolaPrezzo = () => {
+
     const giorni =
       (new Date(exitDate) - new Date(entryDate)) / (1000 * 60 * 60 * 24);
 
     const prezzo = Math.max(5, giorni * 8);
+
     setBookingPrice(prezzo);
   };
 
   const confermaPrenotazione = () => {
+
     const pren = {
       id: Date.now(),
       parcheggio: selectedParking.nome,
@@ -134,8 +170,13 @@ function App() {
     };
 
     const updated = [...prenotazioni, pren];
+
     setPrenotazioni(updated);
-    localStorage.setItem("prenotazioni", JSON.stringify(updated));
+
+    localStorage.setItem(
+      "prenotazioni",
+      JSON.stringify(updated)
+    );
 
     setShowBookingDetails(false);
   };
@@ -154,21 +195,49 @@ function App() {
 
       {/* ADMIN DASHBOARD */}
       {user?.ruolo === "admin" && (
-        <section id="mappa" className="map-section">
+        <section id="dashboard" className="map-section">
+
           <h2>📊 Dashboard Admin</h2>
+
           <AdminDashboard
             parcheggi={parcheggi}
             prenotazioni={prenotazioni}
           />
+
         </section>
       )}
 
       {/* MAPPA */}
       <section id="mappa" className="section-block">
+
         <h2>🗺️ Mappa parcheggi</h2>
-        <div className="map-wrapper">
-          <MapView />
-        </div>
+
+        {!showMap ? (
+
+          <button
+            className="open-map-btn"
+            onClick={() => setShowMap(true)}
+          >
+            Apri mappa
+          </button>
+
+        ) : (
+
+          <>
+            <div className="map-wrapper">
+              <MapView />
+            </div>
+
+            <button
+              className="close-map-btn"
+              onClick={() => setShowMap(false)}
+            >
+              Chiudi mappa
+            </button>
+          </>
+
+        )}
+
       </section>
 
       {/* PARCHEGGI */}
@@ -177,7 +246,9 @@ function App() {
         <h1>Parcheggi disponibili</h1>
 
         {showBookings && user && (
+
           <div className="box">
+
             <h2>Le mie prenotazioni</h2>
 
             {prenotazioni
@@ -187,13 +258,19 @@ function App() {
                   {p.parcheggio} - €{p.prezzo} - 🔑 {p.codice}
                 </div>
               ))}
+
           </div>
+
         )}
 
         <div className="cards">
+
           {parcheggi.map(p => (
+
             <div className="card" key={p.id}>
+
               <h2>{p.nome}</h2>
+
               <p>{p.indirizzo}</p>
 
               <p className={p.posti_liberi > 0 ? "green" : "red"}>
@@ -203,42 +280,73 @@ function App() {
               <button onClick={() => prenotaPosto(p)}>
                 Prenota
               </button>
+
             </div>
+
           ))}
+
         </div>
+
       </div>
 
       {/* CONTATTI */}
       <section id="contatti" className="section-block">
+
         <h2>Contatti</h2>
+
         <p>📍 Smart Parking Brescia</p>
         <p>📞 +39 333 456 7890</p>
         <p>📧 support@smartparking.it</p>
+
       </section>
 
       {/* ABOUT */}
       {showAbout && (
+
         <div className="modal">
+
           <div className="modal-content">
+
             <h2>Smart Parking Brescia</h2>
+
             <p>
               Sistema intelligente per la gestione dei parcheggi nella città di Brescia,
               con prenotazione online e riduzione traffico urbano.
             </p>
-            <button onClick={() => setShowAbout(false)}>Chiudi</button>
+
+            <button onClick={() => setShowAbout(false)}>
+              Chiudi
+            </button>
+
           </div>
+
         </div>
+
       )}
 
       {/* LOGIN */}
       {showLogin && (
+
         <div className="modal">
+
           <div className="modal-content">
 
             <h2>Login</h2>
 
-            <input id="email" placeholder="email" />
-            <input id="password" placeholder="password" />
+            <p style={{ marginBottom: "15px", color: "#666" }}>
+              Accedi al tuo account
+            </p>
+
+            <input
+              id="email"
+              placeholder="Username"
+            />
+
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+            />
 
             <button
               onClick={() =>
@@ -251,21 +359,34 @@ function App() {
               Accedi
             </button>
 
-            <button onClick={() => setShowLogin(false)}>Chiudi</button>
+            <button onClick={() => setShowLogin(false)}>
+              Chiudi
+            </button>
 
           </div>
+
         </div>
+
       )}
 
       {/* PRENOTAZIONE */}
       {showBookingDetails && selectedParking && (
+
         <div className="modal">
+
           <div className="modal-content">
 
             <h2>{selectedParking.nome}</h2>
 
-            <input type="date" onChange={e => setEntryDate(e.target.value)} />
-            <input type="date" onChange={e => setExitDate(e.target.value)} />
+            <input
+              type="date"
+              onChange={e => setEntryDate(e.target.value)}
+            />
+
+            <input
+              type="date"
+              onChange={e => setExitDate(e.target.value)}
+            />
 
             <button onClick={calcolaPrezzo}>
               Calcola prezzo
@@ -274,6 +395,7 @@ function App() {
             {bookingPrice > 0 && (
               <>
                 <h3>€{bookingPrice}</h3>
+
                 <button onClick={confermaPrenotazione}>
                   Conferma
                 </button>
@@ -285,7 +407,9 @@ function App() {
             </button>
 
           </div>
+
         </div>
+
       )}
 
     </>
