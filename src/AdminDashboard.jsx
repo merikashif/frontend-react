@@ -1,19 +1,21 @@
+// Importiamo la libreria Recharts
+// Recharts serve per creare grafici interattivi in React
+// È stata usata nella dashboard admin per mostrare statistiche e dati
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  CartesianGrid,
-  Legend,
-  AreaChart,
-  Area
+  BarChart, // Grafico a barre
+  Bar, // Barre del grafico
+  XAxis, // Asse orizzontale
+  YAxis, // Asse verticale
+  Tooltip, // Finestra info quando passi sopra il grafico
+  ResponsiveContainer, // Rende il grafico responsive
+  PieChart, // Grafico a torta
+  Pie, // Parte principale del grafico a torta
+  Cell, // Colori delle sezioni del grafico
+  CartesianGrid, // Griglia del grafico
+  Legend, // Legenda del grafico
+  AreaChart, // Grafico ad area
+  Area // Area colorata del grafico
 } from "recharts";
-
 function AdminDashboard({ prenotazioni, parcheggi }) {
 
   /* ================= DATI BARRE ================= */
