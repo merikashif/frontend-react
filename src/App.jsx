@@ -16,7 +16,8 @@ function Navbar({ user, onLogout, onShowAbout, onToggleBookings, onLogin }) {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  //ciao
+  // Navbar principale del sito
+// Contiene logo e menu di navigazione
   return (
     <nav className="navbar-main">
 
