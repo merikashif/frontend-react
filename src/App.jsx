@@ -49,65 +49,147 @@ function Navbar({ user, onLogout, onShowAbout, onToggleBookings, onLogin }) {
 }
 //PARTE AMATO
 
+// Componente principale dell'applicazione
 function App() {
 
-  /* STATE */
+  /* ================= STATE ================= */
+
+  // Stato che contiene tutti i parcheggi
+  // setParcheggi serve per aggiornarli
   const [parcheggi, setParcheggi] = useState([]);
+
+  // Stato che contiene tutte le prenotazioni
   const [prenotazioni, setPrenotazioni] = useState([]);
 
+  // Stato dell’utente loggato
+  // null significa nessun utente connesso
   const [user, setUser] = useState(null);
+
+  // Stato per mostrare o nascondere il login
   const [showLogin, setShowLogin] = useState(false);
+
+  // Stato per mostrare le prenotazioni
   const [showBookings, setShowBookings] = useState(false);
+
+  // Stato per mostrare la finestra "Chi siamo"
   const [showAbout, setShowAbout] = useState(false);
 
+  // Contiene il parcheggio selezionato dall’utente
   const [selectedParking, setSelectedParking] = useState(null);
+
+  // Mostra o nasconde i dettagli della prenotazione
   const [showBookingDetails, setShowBookingDetails] = useState(false);
 
+  // Data di ingresso del parcheggio
   const [entryDate, setEntryDate] = useState("");
+
+  // Data di uscita del parcheggio
   const [exitDate, setExitDate] = useState("");
+
+  // Prezzo finale della prenotazione
   const [bookingPrice, setBookingPrice] = useState(0);
 
+  // Stato per mostrare o nascondere la mappa
   const [showMap, setShowMap] = useState(false);
 
-  /* UTENTI */
+  /* ================= UTENTI ================= */
+
+  // Lista utenti finti usati per il login
+  // Simulano utenti presenti nel database
   const fakeUsers = [
+
+    // Account amministratore
     {
       id: 1,
+
+      // Nome visualizzato
       nome: "Amministratore",
+
+      // Username login
       email: "admin",
+
+      // Password login
       password: "admin123",
+
+      // Ruolo amministratore
       ruolo: "admin"
     },
 
+    // Primo utente normale
     {
       id: 2,
+
       nome: "Mario Rossi",
+
       email: "mario",
+
       password: "user123",
+
+      // Ruolo utente standard
       ruolo: "utente"
     },
 
+    // Secondo utente normale
     {
       id: 3,
+
       nome: "Giulia Bianchi",
+
       email: "giulia",
+
       password: "user123",
+
       ruolo: "utente"
     }
   ];
 
-  /* PARCHEGGI */
+  /* ================= PARCHEGGI ================= */
+
+  // useEffect esegue il codice automaticamente
+  // quando il componente viene caricato
   useEffect(() => {
+
+    // fetch invia una richiesta al server PHP
+    // per recuperare i parcheggi dal database MySQL
     fetch("http://localhost/parking-apii/parcheggi.php")
+
+      // Trasforma la risposta in formato JSON
       .then(res => res.json())
+
+      // Salva i dati ricevuti nello stato parcheggi
       .then(data => setParcheggi(data))
+
+      // Se il server non funziona entra nel catch
       .catch(() => {
+
+        // Inserisce parcheggi locali di emergenza
         setParcheggi([
-          { id: 1, nome: "Centro Brescia", indirizzo: "Via Roma", posti_liberi: 40 },
-          { id: 2, nome: "Stazione", indirizzo: "Via Stazione", posti_liberi: 10 },
-          { id: 3, nome: "Ospedale", indirizzo: "Via Ospedale", posti_liberi: 25 }
+
+          {
+            id: 1,
+            nome: "Centro Brescia",
+            indirizzo: "Via Roma",
+            posti_liberi: 40
+          },
+
+          {
+            id: 2,
+            nome: "Stazione",
+            indirizzo: "Via Stazione",
+            posti_liberi: 10
+          },
+
+          {
+            id: 3,
+            nome: "Ospedale",
+            indirizzo: "Via Ospedale",
+            posti_liberi: 25
+          }
+
         ]);
       });
+
+  // Array vuoto = esegue useEffect una sola volta
   }, []);
 //PARTE THIND
   /* LOCAL STORAGE */
