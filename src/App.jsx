@@ -1,9 +1,13 @@
+// Importa gli hook useEffect e useState da React
+// useState serve per creare variabili dinamiche
+// useEffect serve per eseguire funzioni automatiche quando la pagina si carica
 import { useEffect, useState } from "react";
+// Importa il file CSS principale del progetto
+// Contiene tutta la grafica del sito
 import "./App.css";
 import AdminDashboard from "./AdminDashboard";
-import MapView from "./MapView";
+import MapView from "./MapView"
 
-/* ================= NAVBAR ================= */
 function Navbar({ user, onLogout, onShowAbout, onToggleBookings, onLogin }) {
 
   const scrollTo = (id) => {
