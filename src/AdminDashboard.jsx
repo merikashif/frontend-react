@@ -18,7 +18,8 @@ import {
 } from "recharts";
 function AdminDashboard({ prenotazioni, parcheggi }) {
 
-  /* ================= DATI BARRE ================= */
+ // Creiamo i dati per il grafico a barre
+// map() serve per trasformare ogni parcheggio in un oggetto nuovo
 
   const dataBar = parcheggi.map(p => ({
     nome: p.nome,
