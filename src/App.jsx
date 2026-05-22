@@ -1,3 +1,4 @@
+//KASHIF
 // Importa gli hook useEffect e useState da React
 // useState serve per creare variabili dinamiche
 // useEffect serve per eseguire funzioni automatiche quando la pagina si carica
@@ -45,8 +46,8 @@ function Navbar({ user, onLogout, onShowAbout, onToggleBookings, onLogin }) {
     </nav>
   );
 }
+//PARTE AMATO
 
-/* ================= APP ================= */
 function App() {
 
   /* STATE */
@@ -107,7 +108,7 @@ function App() {
         ]);
       });
   }, []);
-
+//PARTE THIND
   /* LOCAL STORAGE */
   useEffect(() => {
     const saved = localStorage.getItem("prenotazioni");
@@ -185,7 +186,7 @@ function App() {
 
     setShowBookingDetails(false);
   };
-
+//FENOTTI
   return (
     <>
 
