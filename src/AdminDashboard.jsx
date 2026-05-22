@@ -30,7 +30,8 @@ function AdminDashboard({ prenotazioni, parcheggi }) {
   }));
 
   /* ================= DATI TORTA ================= */
-
+// Calcola il totale dei posti liberi
+// reduce() somma tutti i posti liberi dei parcheggi
   const totaleLiberi = parcheggi.reduce(
     (acc, p) => acc + p.posti_liberi,
     0
