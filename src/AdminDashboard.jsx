@@ -23,6 +23,8 @@ function AdminDashboard({ prenotazioni, parcheggi }) {
 
   const dataBar = parcheggi.map(p => ({
     nome: p.nome,
+     // Calcola i posti occupati
+  // posti totali - posti liberi
     utilizzo: p.posti_totali - p.posti_liberi,
     liberi: p.posti_liberi
   }));
