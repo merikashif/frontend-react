@@ -270,239 +270,322 @@ function App() {
     setShowBookingDetails(false);
   };
 //FENOTTI
-  return (
-    <>
+// return contiene tutta l’interfaccia grafica mostrata all’utente
+return (
+  <>
 
-      {/* NAVBAR */}
-      <Navbar
-        user={user}
-        onLogin={() => setShowLogin(true)}
-        onLogout={handleLogout}
-        onToggleBookings={() => setShowBookings(!showBookings)}
-        onShowAbout={() => setShowAbout(true)}
-      />
+    {/* ================= NAVBAR ================= */}
 
-      {/* ADMIN DASHBOARD */}
-      {user?.ruolo === "admin" && (
-        <section id="dashboard" className="map-section">
+    // Componente Navbar principale del sito
+    // Passa dati e funzioni alla navbar
+    <Navbar
 
-          <h2> Dashboard Admin</h2>
+      // Utente attualmente loggato
+      user={user}
 
-          <AdminDashboard
-            parcheggi={parcheggi}
-            prenotazioni={prenotazioni}
-          />
+      // Apre la finestra login
+      onLogin={() => setShowLogin(true)}
 
-        </section>
-      )}
+      // Esegue il logout
+      onLogout={handleLogout}
 
-      {/* MAPPA */}
-      <section id="mappa" className="section-block">
+      // Mostra o nasconde le prenotazioni
+      onToggleBookings={() => setShowBookings(!showBookings)}
 
-        <h2>🗺️ Mappa parcheggi</h2>
+      // Mostra la finestra "Chi siamo"
+      onShowAbout={() => setShowAbout(true)}
+    />
 
-        {!showMap ? (
+    {/* ================= ADMIN DASHBOARD ================= */}
 
-          <button
-            className="open-map-btn"
-            onClick={() => setShowMap(true)}
-          >
-            Apri mappa
-          </button>
+    // Controlla se l’utente è admin
+    // Se è admin mostra la dashboard
+    {user?.ruolo === "admin" && (
 
-        ) : (
+      <section id="dashboard" className="map-section">
 
-          <>
-            <div className="map-wrapper">
-              <MapView />
-            </div>
+        // Titolo dashboard
+        <h2> Dashboard Admin</h2>
 
-            <button
-              className="close-map-btn"
-              onClick={() => setShowMap(false)}
-            >
-              Chiudi mappa
-            </button>
-          </>
-
-        )}
+        // Componente dashboard amministratore
+        // Riceve parcheggi e prenotazioni
+        <AdminDashboard
+          parcheggi={parcheggi}
+          prenotazioni={prenotazioni}
+        />
 
       </section>
+    )}
 
-      {/* PARCHEGGI */}
-      <div id="parcheggi" className="container">
+    {/* ================= MAPPA ================= */}
 
-        <h1>Parcheggi disponibili</h1>
+    // Sezione della mappa parcheggi
+    <section id="mappa" className="section-block">
 
-        {showBookings && user && (
+      <h2>🗺️ Mappa parcheggi</h2>
 
-          <div className="box">
+      // Se la mappa è chiusa mostra il bottone
+      {!showMap ? (
 
-            <h2>Le mie prenotazioni</h2>
+        <button
+          className="open-map-btn"
 
-            {prenotazioni
-              .filter(p => p.userId === user.id)
-              .map(p => (
-                <div key={p.id}>
-                  {p.parcheggio} - €{p.prezzo} - 🔑 {p.codice}
-                </div>
-              ))}
+          // Apre la mappa
+          onClick={() => setShowMap(true)}
+        >
+          Apri mappa
+        </button>
+
+      ) : (
+
+        <>
+          // Contenitore della mappa
+          <div className="map-wrapper">
+
+            // Componente mappa
+            <MapView />
 
           </div>
 
-        )}
+          <button
+            className="close-map-btn"
 
-        <div className="cards">
+            // Chiude la mappa
+            onClick={() => setShowMap(false)}
+          >
+            Chiudi mappa
+          </button>
+        </>
 
-          {parcheggi.map(p => (
+      )}
 
-            <div className="card" key={p.id}>
+    </section>
 
-              <h2>{p.nome}</h2>
+    {/* ================= PARCHEGGI ================= */}
 
-              <p>{p.indirizzo}</p>
+    // Contenitore principale parcheggi
+    <div id="parcheggi" className="container">
 
-              <p className={p.posti_liberi > 0 ? "green" : "red"}>
-                {p.posti_liberi > 0 ? "Disponibile" : "Completo"}
-              </p>
+      <h1>Parcheggi disponibili</h1>
 
-              <button onClick={() => prenotaPosto(p)}>
-                Prenota
-              </button>
+      // Mostra prenotazioni solo se attivate e utente loggato
+      {showBookings && user && (
 
-            </div>
+        <div className="box">
 
-          ))}
+          <h2>Le mie prenotazioni</h2>
+
+          {prenotazioni
+
+            // Filtra prenotazioni dell’utente loggato
+            .filter(p => p.userId === user.id)
+
+            // Mostra ogni prenotazione
+            .map(p => (
+
+              <div key={p.id}>
+                {p.parcheggio} - €{p.prezzo} - 🔑 {p.codice}
+              </div>
+
+            ))}
+
+        </div>
+
+      )}
+
+      // Contenitore card parcheggi
+      <div className="cards">
+
+        {parcheggi.map(p => (
+
+          // Card singolo parcheggio
+          <div className="card" key={p.id}>
+
+            // Nome parcheggio
+            <h2>{p.nome}</h2>
+
+            // Indirizzo parcheggio
+            <p>{p.indirizzo}</p>
+
+            // Stato parcheggio
+            // Verde se disponibile
+            // Rosso se completo
+            <p className={p.posti_liberi > 0 ? "green" : "red"}>
+              {p.posti_liberi > 0 ? "Disponibile" : "Completo"}
+            </p>
+
+            // Bottone prenotazione
+            <button onClick={() => prenotaPosto(p)}>
+              Prenota
+            </button>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
+
+    {/* ================= CONTATTI ================= */}
+
+    // Sezione contatti del progetto
+    <section id="contatti" className="section-block">
+
+      <h2>Contatti</h2>
+
+      // Indirizzo azienda
+      <p>📍 Smart Parking Brescia</p>
+
+      // Numero telefono
+      <p>📞 +39 333 456 7890</p>
+
+      // Email supporto
+      <p>📧 support@smartparking.it</p>
+
+    </section>
+
+    {/* ================= ABOUT ================= */}
+
+    // Mostra finestra Chi siamo
+    {showAbout && (
+
+      <div className="modal">
+
+        <div className="modal-content">
+
+          <h2>Smart Parking Brescia</h2>
+
+          // Descrizione progetto
+          <p>
+            Sistema intelligente per la gestione dei parcheggi nella città di Brescia,
+            con prenotazione online e riduzione traffico urbano.
+          </p>
+
+          // Chiude finestra about
+          <button onClick={() => setShowAbout(false)}>
+            Chiudi
+          </button>
 
         </div>
 
       </div>
 
-      {/* CONTATTI */}
-      <section id="contatti" className="section-block">
+    )}
 
-        <h2>Contatti</h2>
+    {/* ================= LOGIN ================= */}
 
-        <p>📍 Smart Parking Brescia</p>
-        <p>📞 +39 333 456 7890</p>
-        <p>📧 support@smartparking.it</p>
+    // Mostra finestra login
+    {showLogin && (
 
-      </section>
+      <div className="modal">
 
-      {/* ABOUT */}
-      {showAbout && (
+        <div className="modal-content">
 
-        <div className="modal">
+          <h2>Login</h2>
 
-          <div className="modal-content">
+          <p style={{ marginBottom: "15px", color: "#666" }}>
+            Accedi al tuo account
+          </p>
 
-            <h2>Smart Parking Brescia</h2>
+          // Input username
+          <input
+            id="email"
+            placeholder="Username"
+          />
 
-            <p>
-              Sistema intelligente per la gestione dei parcheggi nella città di Brescia,
-              con prenotazione online e riduzione traffico urbano.
-            </p>
+          // Input password
+          <input
+            id="password"
+            type="password"
+            placeholder="Password"
+          />
 
-            <button onClick={() => setShowAbout(false)}>
-              Chiudi
-            </button>
+          // Bottone login
+          <button
+            onClick={() =>
 
-          </div>
+              // Esegue login leggendo input
+              handleLogin(
+                document.getElementById("email").value,
+                document.getElementById("password").value
+              )
+            }
+          >
+            Accedi
+          </button>
 
-        </div>
-
-      )}
-
-      {/* LOGIN */}
-      {showLogin && (
-
-        <div className="modal">
-
-          <div className="modal-content">
-
-            <h2>Login</h2>
-
-            <p style={{ marginBottom: "15px", color: "#666" }}>
-              Accedi al tuo account
-            </p>
-
-            <input
-              id="email"
-              placeholder="Username"
-            />
-
-            <input
-              id="password"
-              type="password"
-              placeholder="Password"
-            />
-
-            <button
-              onClick={() =>
-                handleLogin(
-                  document.getElementById("email").value,
-                  document.getElementById("password").value
-                )
-              }
-            >
-              Accedi
-            </button>
-
-            <button onClick={() => setShowLogin(false)}>
-              Chiudi
-            </button>
-
-          </div>
+          // Chiude login
+          <button onClick={() => setShowLogin(false)}>
+            Chiudi
+          </button>
 
         </div>
 
-      )}
+      </div>
 
-      {/* PRENOTAZIONE */}
-      {showBookingDetails && selectedParking && (
+    )}
 
-        <div className="modal">
+    {/* ================= PRENOTAZIONE ================= */}
 
-          <div className="modal-content">
+    // Mostra dettagli prenotazione
+    {showBookingDetails && selectedParking && (
 
-            <h2>{selectedParking.nome}</h2>
+      <div className="modal">
 
-            <input
-              type="date"
-              onChange={e => setEntryDate(e.target.value)}
-            />
+        <div className="modal-content">
 
-            <input
-              type="date"
-              onChange={e => setExitDate(e.target.value)}
-            />
+          // Nome parcheggio selezionato
+          <h2>{selectedParking.nome}</h2>
 
-            <button onClick={calcolaPrezzo}>
-              Calcola prezzo
-            </button>
+          // Input data ingresso
+          <input
+            type="date"
+            onChange={e => setEntryDate(e.target.value)}
+          />
 
-            {bookingPrice > 0 && (
-              <>
-                <h3>€{bookingPrice}</h3>
+          // Input data uscita
+          <input
+            type="date"
+            onChange={e => setExitDate(e.target.value)}
+          />
 
-                <button onClick={confermaPrenotazione}>
-                  Conferma
-                </button>
-              </>
-            )}
+          // Calcola il prezzo
+          <button onClick={calcolaPrezzo}>
+            Calcola prezzo
+          </button>
 
-            <button onClick={() => setShowBookingDetails(false)}>
-              Chiudi
-            </button>
+          // Mostra prezzo se maggiore di 0
+          {bookingPrice > 0 && (
+            <>
 
-          </div>
+              // Prezzo finale
+              <h3>€{bookingPrice}</h3>
+
+              // Conferma prenotazione
+              <button onClick={confermaPrenotazione}>
+                Conferma
+              </button>
+
+            </>
+          )}
+
+          // Chiude finestra prenotazione
+          <button onClick={() => setShowBookingDetails(false)}>
+            Chiudi
+          </button>
 
         </div>
 
-      )}
+      </div>
 
-    </>
-  );
+    )}
+
+  </>
+);
+
+// Fine componente App
 }
 
+// Esporta il componente App
 export default App;
